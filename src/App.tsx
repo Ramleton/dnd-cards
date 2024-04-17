@@ -1,12 +1,13 @@
 import React from 'react';
 import Header from './components/Header';
+import OptionsGrid from './components/OptionsGrid';
 import styled, { createGlobalStyle } from 'styled-components';
 
 const App = () => {
   return (
     <AppContainer>
       <GlobalStyles />
-      <Header></Header>
+      <Header />
       <OptionsGrid />
     </AppContainer>
   );
@@ -17,11 +18,6 @@ const GlobalStyles = createGlobalStyle`
     margin: 0;
     padding: 0;
   }
-`;
-
-const OptionsGrid = styled.div`
-  display: grid;
-  flex-grow: 7;
 `;
 
 const AppContainer = styled.div`
