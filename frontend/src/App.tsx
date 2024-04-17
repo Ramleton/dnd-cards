@@ -4,6 +4,9 @@ import styled, { createGlobalStyle } from 'styled-components';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Create from './Create';
 import Home from './Home';
+import { fetchAllSvgIcons } from './api/api';
+
+fetchAllSvgIcons();
 
 const router = createBrowserRouter([
   {
