@@ -18,7 +18,7 @@ const Title = styled.p`
 const HeaderContainer = styled.h1`
   display: flex;
   flex-direction: row;
-  flex-grow: 1;
+  height: 2em;
   justify-content: center;
   align-items: center;
   background-color: #343837;

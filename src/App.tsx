@@ -1,14 +1,27 @@
 import React from 'react';
 import Header from './components/Header';
-import OptionsGrid from './components/OptionsGrid';
 import styled, { createGlobalStyle } from 'styled-components';
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Create from './Create';
+import Home from './Home';
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Home />
+  },
+  {
+    path: "/create-item",
+    element: <Create />
+  }
+]);
 
 const App = () => {
   return (
     <AppContainer>
       <GlobalStyles />
       <Header />
-      <OptionsGrid />
+      <RouterProvider router={router} />
     </AppContainer>
   );
 };
