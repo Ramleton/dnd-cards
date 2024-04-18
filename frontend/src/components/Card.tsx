@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
 import styled from 'styled-components';
 import { fetchSvgIcon } from "../api/api";
+import { Trait } from "../Home";
 
 interface CardProps {
     title: string,
     desc: string,
-    icon: string
+    icon: string,
+    type: string,
+    traits: Trait[]
 }
 
-const Card: React.FC<CardProps> = ({ title, desc, icon }) => {
+const Card: React.FC<CardProps> = ({ title, desc, icon, type, traits }) => {
     const [iconData, setIconData] = useState('');
 
     useEffect(() => {
@@ -17,6 +20,7 @@ const Card: React.FC<CardProps> = ({ title, desc, icon }) => {
                 setIconData(URL.createObjectURL(data));
             }
         });
+        console.log(traits);
     }, [icon]);
 
     return (
@@ -25,15 +29,62 @@ const Card: React.FC<CardProps> = ({ title, desc, icon }) => {
                 <CardIcon src={iconData} />
                 <CardTitleDiv>
                     <CardTitle>{title}</CardTitle>
-                    <UnderlineDivider />
+                    { title && <UnderlineDivider /> }
                 </CardTitleDiv>
+                <ItemTypeDiv>
+                    <ItemType>{type}</ItemType>
+                </ItemTypeDiv>
                 <CardDescDiv>
                     <CardDesc>{desc}</CardDesc>
+                    { desc && <UnderlineDivider /> }
                 </CardDescDiv>
+                <CardTraitsDiv>
+                    {
+                        traits.map((trait, index) => (
+                            <TraitItem key={index} >
+                                <p>
+                                    <TraitName>{`${trait.name}.`}</TraitName>
+                                    <TraitDesc>{trait.desc}</TraitDesc>
+                                </p>
+                            </TraitItem>
+                        ))
+                    }
+                </CardTraitsDiv>
             </CardDiv>
         </CardContainer>
     );
 };
+
+const ItemTypeDiv = styled.div`
+    display: flex;
+    flex-direction: row;
+    grid-row: 3 / span 1;
+    margin: 0 1em;
+    justify-content: center;
+`;
+
+const ItemType = styled.p`
+    text-align: center;
+    align-self: center;
+    font-size: 2em;
+    font-weight: bold;
+`;
+
+const TraitItem = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
+
+const TraitName = styled.span`
+    font-size: 1.2em;
+    font-weight: bold;
+    font-style: italic;
+`;
+
+const TraitDesc = styled.span`
+    font-size: 1.2em;
+    margin-left: 0.5em;
+`;
 
 const CardIcon = styled.img`
     border-radius: 3em;
@@ -42,11 +93,11 @@ const CardIcon = styled.img`
     justify-self: center;
     align-self: center;
     width: 50%;
-    height: auto;
 `;
 
 const CardTitleDiv = styled.div`
     position: relative;
+    grid-row: 2 / span 1;
     margin: 0 1em;
 `;
 
@@ -59,16 +110,22 @@ const CardTitle = styled.p`
 
 const UnderlineDivider = styled.div`
     position: absolute;
-    bottom: 1em;
+    bottom: -0.1em;
     left: 0;
     width: 100%;
     height: 0.2em;
     background-color: black;
 `
 
+const CardTraitsDiv = styled.div`
+    margin: 0 1em 1em 1em;
+    grid-row: 5 / span 6;
+`;
+
 const CardDescDiv = styled.div`
+    position: relative;
     margin: 0em 1em 1em 1em;
-    grid-row: 3 / span 3;
+    grid-row: 4 / span 1;
 `;
 
 const CardDesc = styled.p`
@@ -84,7 +141,7 @@ const CardContainer = styled.div`
 
 const CardDiv = styled.div`
     display: grid;
-    grid-template-rows: repeat(5, 1fr);
+    grid-template-rows: repeat(10, 1fr);
     width: 32em;
     height: 44em;
     background-color: #ffffff;

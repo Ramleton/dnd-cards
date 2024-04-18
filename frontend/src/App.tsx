@@ -15,8 +15,8 @@ const App = () => {
   return (
     <AppContainer>
       <GlobalStyles />
-      <Header />
-      <RouterProvider router={router} />
+        <Header />
+        <RouterProvider router={router} />
     </AppContainer>
   );
 };

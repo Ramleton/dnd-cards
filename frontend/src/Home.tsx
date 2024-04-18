@@ -10,11 +10,18 @@ export interface SvgData {
     path: string;
 }
 
+export interface Trait {
+    name: string;
+    desc: string;
+}
+
 const Home = () => {
     const [svgs, setSvgs] = useState<SvgData[]>([]);
     const [cardTitle, setCardTitle] = useState<string>('');
     const [cardDesc, setCardDesc] = useState<string>('');
     const [cardIcon, setCardIcon] = useState<string>('');
+    const [cardTraits, setCardTraits] = useState<Trait[]>([]);
+    const [cardType, setCardType] = useState<string>('');
 
     useEffect(() => {
         if (svgs.length === 0) {
@@ -25,14 +32,26 @@ const Home = () => {
         }
     }, []);
 
+    const addCardTrait = (newCardTrait: Trait) => {
+        setCardTraits([...cardTraits, newCardTrait]);
+    }
+
+    const removeCardTrait = (index: number) => {
+        setCardTraits(cardTraits.filter((_, i) => i !== index))
+    }
+
     return (
         <HomeContainer>
-            <Card title={cardTitle} desc={cardDesc} icon={cardIcon} />
+            <Card title={cardTitle} desc={cardDesc} icon={cardIcon} traits={cardTraits} type={cardType} />
             <CardForm
                 svgOptions={svgs}
                 handleTitleChange={setCardTitle}
                 handleDescChange={setCardDesc}
                 handleIconChange={setCardIcon}
+                handleTypeChange={setCardType}
+                handleNewTrait={addCardTrait}
+                handleRemoveTrait={removeCardTrait}
+                traits={cardTraits}
             />
         </HomeContainer>
     );
