@@ -7,7 +7,7 @@ import Card from "./components/Card";
 export interface SvgData {
     fileName: string;
     content: string;
-    author: string;
+    path: string;
 }
 
 const Home = () => {
@@ -20,11 +20,10 @@ const Home = () => {
         if (svgs.length === 0) {
             fetchAllSvgIcons().then((data) => {
                 setSvgs(data);
+                console.log(data);
             });
         }
-        console.log(svgs);
-    }, [svgs]);
-
+    }, []);
 
     return (
         <HomeContainer>

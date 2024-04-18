@@ -2,13 +2,14 @@ import express, { Request, Response } from 'express';
 
 import fs from 'fs';
 import path from 'path';
-import { findSvgFile, getSvgFilesWithParentFolderNames, iconsDirectory } from './util';
+import { findSvgFile, getSvgFilesWithContents, iconsDirectory } from './util';
 const cors = require('cors');
 
 const app = express();
 
 // Middleware
 app.use(cors());
+app.use(express.json());
 
 const PORT = process.env.PORT || 3010;
 
@@ -24,7 +25,8 @@ app.listen(PORT, () => {
 
 app.get('/api/icons/retrieve/all/', (req: Request, res: Response) => {
     try {
-        const allSvgFiles = getSvgFilesWithParentFolderNames(iconsDirectory);
+        const allSvgFiles = getSvgFilesWithContents(iconsDirectory);
+        res.status(200);
         res.json(allSvgFiles);
     } catch (error) {
         console.error('Error retrieving SVG files:', error);
@@ -32,22 +34,19 @@ app.get('/api/icons/retrieve/all/', (req: Request, res: Response) => {
     }
 });
 
-app.get('/api/icons/retrieve/:iconName/', (req: Request, res: Response) => {
-    const { svgName } = req.params;
+app.post('/api/icons/retrieve/', (req: Request, res: Response) => {
+    const { filePath } = req.body;
+    const fullPath = path.join(iconsDirectory, filePath); // Assuming the SVG files are in a folder named "public"
 
-    const iconFilePath = findSvgFile(iconsDirectory, svgName);
-
-    if (iconFilePath) {
-        fs.readFile(iconFilePath, 'utf8', (err, data) => {
-            if (err) {
-                console.error('Error reading SVG file:', err);
-                return res.status(500).send('Internal server error');
-            }
-
-            res.set('Content-Type', 'image/svg+xml');
-            res.send(data);
-        });
+    // Check if the file exists
+    if (fs.existsSync(fullPath)) {
+        // Set the content type to SVG
+        res.setHeader('Content-Type', 'image/svg+xml');
+        
+        // Read the file and send it in the response
+        fs.createReadStream(fullPath).pipe(res);
     } else {
-        res.status(404).send('SVG icon not found');
+        // Return a 404 if the file does not exist
+        res.status(404).send('SVG file not found');
     }
 });

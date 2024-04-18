@@ -22,7 +22,7 @@ interface Option {
 const CardForm: React.FC<CardFormProps> = ({ svgOptions, handleTitleChange, handleDescChange, handleIconChange }) => {
 
     const iconOptions = svgOptions.map(option => ({
-        value: option.fileName,
+        value: option.path,
         label: option.fileName
     }));
 
