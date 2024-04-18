@@ -2,7 +2,7 @@ import React from "react";
 import styled from 'styled-components';
 import Select, { ActionMeta } from 'react-select';
 import { StylesConfig } from 'react-select';
-import { SvgData, Trait } from "../Home";
+import { Item, SvgData, Trait } from "../Home";
 import TraitsForm from "./TraitsForm";
 
 interface CardFormProps {
@@ -14,7 +14,7 @@ interface CardFormProps {
     // eslint-disable-next-line no-unused-vars
     handleIconChange: (newIcon: string) => void;
     // eslint-disable-next-line no-unused-vars
-    handleTypeChange: (newType: string) => void;
+    handleTypeChange: (newType: Item) => void;
     // eslint-disable-next-line no-unused-vars
     handleNewTrait: (newCardTrait: Trait) => void;
     // eslint-disable-next-line no-unused-vars
@@ -73,7 +73,7 @@ const CardForm: React.FC<CardFormProps> = (
                 </FormItem>
                 <FormItem>
                     <Label>Item Type:</Label>
-                    <ItemTypeSelect onChange={(e) => handleTypeChange(e.target.value)}>
+                    <ItemTypeSelect onChange={(e) => handleTypeChange(e.target.value as Item)}>
                         <option value="">Select an option</option>
                         {
                             itemTypes.map(itemType => <option key={itemType} value={itemType}>{itemType}</option>)

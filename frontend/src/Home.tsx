@@ -15,13 +15,15 @@ export interface Trait {
     desc: string;
 }
 
+export type Item = 'Armour' | 'Weapon' | 'Jewellery' | 'Accessory' | '';
+
 const Home = () => {
     const [svgs, setSvgs] = useState<SvgData[]>([]);
     const [cardTitle, setCardTitle] = useState<string>('');
     const [cardDesc, setCardDesc] = useState<string>('');
     const [cardIcon, setCardIcon] = useState<string>('');
     const [cardTraits, setCardTraits] = useState<Trait[]>([]);
-    const [cardType, setCardType] = useState<string>('');
+    const [cardType, setCardType] = useState<Item>('');
 
     useEffect(() => {
         if (svgs.length === 0) {
