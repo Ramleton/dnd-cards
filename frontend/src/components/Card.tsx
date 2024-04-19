@@ -21,7 +21,6 @@ const Card: React.FC<CardProps> = ({ title, desc, icon, type, traits, forwardedR
                 setIconData(URL.createObjectURL(data));
             }
         });
-        console.log(traits);
     }, [icon]);
 
     return (

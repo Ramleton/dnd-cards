@@ -19,12 +19,14 @@ const ScreenshotCard: React.FC<ScreenshotCardProps> = ({ title, desc, icon, type
         const cardElement = cardRef.current;
 
         if (cardElement) {
-            domToPng(cardElement).then(dataUrl => {
-                const link = document.createElement('a');
-                link.download = 'screenshot.png';
-                link.href = dataUrl;
-                link.click();
-            });
+            if (title) {
+                domToPng(cardElement).then(dataUrl => {
+                    const link = document.createElement('a');
+                    link.download = `${title.replaceAll(' ', '-')}.png`;
+                    link.href = dataUrl;
+                    link.click();
+                });
+            }
         }
     };
 
