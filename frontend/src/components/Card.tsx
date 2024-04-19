@@ -138,6 +138,10 @@ const CardContainer = styled.div`
     justify-content: center;
     align-items: center;
     flex-direction: column;
+
+    &:hover {
+        cursor: default;
+    }
 `;
 
 const CardDiv = styled.div`

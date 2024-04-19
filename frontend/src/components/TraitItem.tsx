@@ -32,6 +32,10 @@ const TraitItemContainer = styled.div`
     background-color: #f0f0f0;
     border-radius: 0.5em;
     margin: 0 0 0.2em 0;
+
+    &:hover {
+        cursor: default;
+    }
 `;
 
 const TraitText = styled.p`
