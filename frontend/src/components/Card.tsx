@@ -130,6 +130,7 @@ const CardDescDiv = styled.div`
 
 const CardDesc = styled.p`
     font-size: 1.25em;
+    margin: 0 0 0.5em 0;
 `;
 
 const CardContainer = styled.div`
