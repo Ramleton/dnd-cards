@@ -8,10 +8,11 @@ interface CardProps {
     desc: string,
     icon: string,
     type: string,
-    traits: Trait[]
+    traits: Trait[],
+    forwardedRef: React.Ref<HTMLDivElement>
 }
 
-const Card: React.FC<CardProps> = ({ title, desc, icon, type, traits }) => {
+const Card: React.FC<CardProps> = ({ title, desc, icon, type, traits, forwardedRef }) => {
     const [iconData, setIconData] = useState('');
 
     useEffect(() => {
@@ -24,7 +25,7 @@ const Card: React.FC<CardProps> = ({ title, desc, icon, type, traits }) => {
     }, [icon]);
 
     return (
-        <CardContainer>
+        <CardContainer ref={forwardedRef} >
             <CardDiv>
                 <CardIcon src={iconData} />
                 <CardTitleDiv>

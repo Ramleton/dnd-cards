@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { fetchAllSvgIcons } from "./api/api";
 import CardForm from "./components/CardForm";
-import Card from "./components/Card";
+import ScreenshotCard from "./components/CardScreenshot";
 
 export interface SvgData {
     fileName: string;
@@ -44,7 +44,7 @@ const Home = () => {
 
     return (
         <HomeContainer>
-            <Card title={cardTitle} desc={cardDesc} icon={cardIcon} traits={cardTraits} type={cardType} />
+            <ScreenshotCard title={cardTitle} desc={cardDesc} icon={cardIcon} traits={cardTraits} type={cardType} />
             <CardForm
                 svgOptions={svgs}
                 handleTitleChange={setCardTitle}
