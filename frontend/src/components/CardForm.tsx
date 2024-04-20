@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import styled from 'styled-components';
 import Select, { ActionMeta } from 'react-select';
 import { StylesConfig } from 'react-select';
-import {Item, Trait} from '../Home';
 import TraitsForm from "./TraitsForm";
 import { fetchAllSvgIcons } from "../api/api";
+import { Item, Rarity, Trait } from "../hooks/CardContext";
 
 interface SvgData {
     fileName: string;
@@ -25,6 +25,8 @@ interface CardFormProps {
     handleNewTrait: (newCardTrait: Trait) => void;
     // eslint-disable-next-line no-unused-vars
     handleRemoveTrait: (index: number) => void;
+    // eslint-disable-next-line no-unused-vars
+    handleRarityChange: (newRarity: Rarity) => void;
 }
 
 interface Option {
@@ -34,9 +36,11 @@ interface Option {
 
 const itemTypes = ['Armour', 'Weapon', 'Jewellery', 'Accessory'];
 
+const itemRarities = ['Common', 'Uncommon', 'Rare', 'Very Rare', 'Legendary'];
+
 const CardForm: React.FC<CardFormProps> = (
     // eslint-disable-next-line no-unused-vars
-    { handleTitleChange, handleDescChange, handleIconChange, handleTypeChange, handleNewTrait, handleRemoveTrait }
+    { handleTitleChange, handleDescChange, handleIconChange, handleTypeChange, handleNewTrait, handleRemoveTrait, handleRarityChange }
 ) => {
     const [svgs, setSvgs] = useState<SvgData[]>([]);
 
@@ -92,6 +96,15 @@ const CardForm: React.FC<CardFormProps> = (
                         <option value="">Select an option</option>
                         {
                             itemTypes.map(itemType => <option key={itemType} value={itemType}>{itemType}</option>)
+                        }
+                    </ItemTypeSelect>
+                </FormItem>
+                <FormItem>
+                    <Label>Rarity:</Label>
+                    <ItemTypeSelect onChange={(e) => handleRarityChange(e.target.value as Rarity)}>
+                        <option value="">Select an option</option>
+                        {
+                            itemRarities.map(rarity => <option key={rarity} value={rarity}>{rarity}</option>)
                         }
                     </ItemTypeSelect>
                 </FormItem>

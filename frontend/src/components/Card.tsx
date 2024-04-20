@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import styled from 'styled-components';
 import { fetchSvgIcon } from "../api/api";
-import CardContext from "../hooks/CardContext";
+import CardContext, { Rarity } from "../hooks/CardContext";
 
 interface CardProps {
     forwardedRef: React.Ref<HTMLDivElement>
@@ -19,9 +19,26 @@ const Card: React.FC<CardProps> = ({ forwardedRef }) => {
         });
     }, [cardProps.icon]);
 
+    type HexColour = string;
+
+    const rarityToBackgroundColour = (rarity: Rarity): HexColour => {
+        switch(rarity) {
+            case 'Uncommon':
+                return '#14ea22';
+            case 'Rare':
+                return '#238cdb';
+            case 'Very Rare':
+                return '#6714ea';
+            case 'Legendary':
+                return '#ec9a0e';
+            default:
+                return '#3a3a3a';
+        }
+    };
+
     return (
         <CardContainer ref={forwardedRef} >
-            <CardDiv>
+            <CardDiv $borderColour={rarityToBackgroundColour(cardProps.rarity)}>
                 <CardIcon src={iconData} />
                 <CardTitleDiv>
                     <CardTitle>{cardProps.title}</CardTitle>
@@ -140,14 +157,14 @@ const CardContainer = styled.div`
     }
 `;
 
-const CardDiv = styled.div`
+const CardDiv = styled.div<{ $borderColour: string; }>`
     display: grid;
     grid-template-rows: repeat(10, 1fr);
     width: 32em;
     height: 44em;
     background-color: #ffffff;
     border-radius: 2em;
-    border: 0.3em #414141 solid;
+    border: 0.3em ${props => props.$borderColour} solid;
 `;
 
 export default Card;

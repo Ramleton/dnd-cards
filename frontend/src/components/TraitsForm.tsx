@@ -1,8 +1,7 @@
 import React, { useContext, useState } from "react";
 import styled from "styled-components";
-import { Trait } from "../Home";
 import TraitItem from "./TraitItem";
-import CardContext from "../hooks/CardContext";
+import CardContext, { Trait } from "../hooks/CardContext";
 
 interface TraitsFormProps {
     // eslint-disable-next-line no-unused-vars

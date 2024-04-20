@@ -2,21 +2,15 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import CardForm from "./components/CardForm";
 import ScreenshotCard from "./components/CardScreenshot";
-import CardContext, { CardContextProps } from "./hooks/CardContext";
-
-export interface Trait {
-    name: string;
-    desc: string;
-}
-
-export type Item = 'Armour' | 'Weapon' | 'Jewellery' | 'Accessory' | '';
+import CardContext, { CardContextProps, Item, Rarity, Trait } from "./hooks/CardContext";
 
 const Home = () => {
     const [cardTitle, setCardTitle] = useState<string>('');
     const [cardDesc, setCardDesc] = useState<string>('');
     const [cardIcon, setCardIcon] = useState<string>('');
     const [cardTraits, setCardTraits] = useState<Trait[]>([]);
-    const [cardType, setCardType] = useState<Item>('');
+    const [cardType, setCardType] = useState<Item>(null);
+    const [cardRarity, setCardRarity] = useState<Rarity>(null);
 
     const addCardTrait = (newCardTrait: Trait) => {
         setCardTraits([...cardTraits, newCardTrait]);
@@ -31,6 +25,7 @@ const Home = () => {
         desc: cardDesc,
         icon: cardIcon,
         type: cardType,
+        rarity: cardRarity,
         traits: cardTraits
     };
 
@@ -43,6 +38,7 @@ const Home = () => {
                     handleDescChange={setCardDesc}
                     handleIconChange={setCardIcon}
                     handleTypeChange={setCardType}
+                    handleRarityChange={setCardRarity}
                     handleNewTrait={addCardTrait}
                     handleRemoveTrait={removeCardTrait}
                 />
