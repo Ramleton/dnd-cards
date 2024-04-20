@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import CardForm from "./components/CardForm";
-import ScreenshotCard from "./components/CardScreenshot";
-import CardContext, { CardContextProps, Item, Rarity, Trait } from "./hooks/CardContext";
+import CardForm from "../components/CardForm";
+import ScreenshotCard from "../components/CardScreenshot";
+import CardContext, { CardContextProps, Item, Rarity, Trait } from "../hooks/CardContext";
 
 const Home = () => {
     const [cardTitle, setCardTitle] = useState<string>('');
