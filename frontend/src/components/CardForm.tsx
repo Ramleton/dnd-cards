@@ -34,12 +34,21 @@ interface Option {
     label: string;
 }
 
-const itemTypes = ['Armour', 'Weapon', 'Jewellery', 'Accessory'];
+const itemTypes: string[] = [
+    'Light Armour',
+    'Medium Armour',
+    'Heavy Armour',
+    'Melee Weapon',
+    'Ranged Weapon',
+    'Jewellery',
+    'Accessory'
+];
+
+console.log(itemTypes);
 
 const itemRarities = ['Common', 'Uncommon', 'Rare', 'Very Rare', 'Legendary'];
 
 const CardForm: React.FC<CardFormProps> = (
-    // eslint-disable-next-line no-unused-vars
     { handleTitleChange, handleDescChange, handleIconChange, handleTypeChange, handleNewTrait, handleRemoveTrait, handleRarityChange }
 ) => {
     const [svgs, setSvgs] = useState<SvgData[]>([]);
@@ -95,7 +104,7 @@ const CardForm: React.FC<CardFormProps> = (
                     <ItemTypeSelect onChange={(e) => handleTypeChange(e.target.value as Item)}>
                         <option value="">Select an option</option>
                         {
-                            itemTypes.map(itemType => <option key={itemType} value={itemType}>{itemType}</option>)
+                            itemTypes.map(itemType => <option key={itemType} value={itemType as string}>{itemType}</option>)
                         }
                     </ItemTypeSelect>
                 </FormItem>

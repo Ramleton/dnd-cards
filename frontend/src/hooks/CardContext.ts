@@ -1,6 +1,13 @@
 import { createContext } from "react";
 
-export type Item = 'Armour' | 'Weapon' | 'Jewellery' | 'Accessory' | null;
+export type Item = 'Light Armour'
+    | 'Medium Armour'
+    | 'Heavy Armour'
+    | 'Melee Weapon'
+    | 'Ranged Weapon'
+    | 'Jewellery'
+    | 'Accessory'
+    | null;
 
 export type Rarity = 'Common' | 'Uncommon' | 'Rare' | 'Very Rare' | 'Legendary' | null;
 
