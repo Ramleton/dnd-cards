@@ -1,12 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from 'styled-components';
 import Select, { ActionMeta } from 'react-select';
 import { StylesConfig } from 'react-select';
-import { Item, SvgData, Trait } from "../Home";
+import {Item, Trait} from '../Home';
 import TraitsForm from "./TraitsForm";
+import { fetchAllSvgIcons } from "../api/api";
+
+interface SvgData {
+    fileName: string;
+    content: string;
+    path: string;
+}
 
 interface CardFormProps {
-    svgOptions: SvgData[];
     // eslint-disable-next-line no-unused-vars
     handleTitleChange: (newTitle: string) => void;
     // eslint-disable-next-line no-unused-vars
@@ -19,7 +25,6 @@ interface CardFormProps {
     handleNewTrait: (newCardTrait: Trait) => void;
     // eslint-disable-next-line no-unused-vars
     handleRemoveTrait: (index: number) => void;
-    traits: Trait[];
 }
 
 interface Option {
@@ -31,10 +36,20 @@ const itemTypes = ['Armour', 'Weapon', 'Jewellery', 'Accessory'];
 
 const CardForm: React.FC<CardFormProps> = (
     // eslint-disable-next-line no-unused-vars
-    { svgOptions, handleTitleChange, handleDescChange, handleIconChange, handleTypeChange, handleNewTrait, handleRemoveTrait, traits }
+    { handleTitleChange, handleDescChange, handleIconChange, handleTypeChange, handleNewTrait, handleRemoveTrait }
 ) => {
+    const [svgs, setSvgs] = useState<SvgData[]>([]);
 
-    const iconOptions = svgOptions.map(option => ({
+    useEffect(() => {
+        if (svgs.length === 0) {
+            fetchAllSvgIcons().then((data) => {
+                setSvgs(data);
+                console.log(data);
+            });
+        }
+    }, []);
+
+    const iconOptions = svgs.map(option => ({
         value: option.path,
         label: option.fileName
     }));
@@ -81,7 +96,7 @@ const CardForm: React.FC<CardFormProps> = (
                     </ItemTypeSelect>
                 </FormItem>
             </FormContainer>
-            <TraitsForm traits={traits} handleNewTrait={handleNewTrait} handleRemoveTrait={handleRemoveTrait} />
+            <TraitsForm handleNewTrait={handleNewTrait} handleRemoveTrait={handleRemoveTrait} />
             <FormContainer>
                 <Label>Description</Label>
                 <DescInput onChange={(event) => handleDescChange(event.target.value)} />

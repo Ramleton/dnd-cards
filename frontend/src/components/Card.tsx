@@ -1,46 +1,42 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from 'styled-components';
 import { fetchSvgIcon } from "../api/api";
-import { Trait } from "../Home";
+import CardContext from "../hooks/CardContext";
 
 interface CardProps {
-    title: string,
-    desc: string,
-    icon: string,
-    type: string,
-    traits: Trait[],
     forwardedRef: React.Ref<HTMLDivElement>
 }
 
-const Card: React.FC<CardProps> = ({ title, desc, icon, type, traits, forwardedRef }) => {
+const Card: React.FC<CardProps> = ({ forwardedRef }) => {
+    const cardProps = useContext(CardContext);
     const [iconData, setIconData] = useState('');
 
     useEffect(() => {
-        if (icon !== '') fetchSvgIcon(icon).then(data => {
+        if (cardProps.icon !== '') fetchSvgIcon(cardProps.icon).then(data => {
             if (data instanceof Blob) {
                 setIconData(URL.createObjectURL(data));
             }
         });
-    }, [icon]);
+    }, [cardProps.icon]);
 
     return (
         <CardContainer ref={forwardedRef} >
             <CardDiv>
                 <CardIcon src={iconData} />
                 <CardTitleDiv>
-                    <CardTitle>{title}</CardTitle>
-                    { title && <UnderlineDivider /> }
+                    <CardTitle>{cardProps.title}</CardTitle>
+                    { cardProps.title && <UnderlineDivider /> }
                 </CardTitleDiv>
                 <ItemTypeDiv>
-                    <ItemType>{type}</ItemType>
+                    <ItemType>{cardProps.type}</ItemType>
                 </ItemTypeDiv>
                 <CardDescDiv>
-                    <CardDesc>{desc}</CardDesc>
-                    { desc && <UnderlineDivider /> }
+                    <CardDesc>{cardProps.desc}</CardDesc>
+                    { cardProps.desc && <UnderlineDivider /> }
                 </CardDescDiv>
                 <CardTraitsDiv>
                     {
-                        traits.map((trait, index) => (
+                        cardProps.traits.map((trait, index) => (
                             <TraitItem key={index} >
                                 <p>
                                     <TraitName>{`${trait.name}.`}</TraitName>

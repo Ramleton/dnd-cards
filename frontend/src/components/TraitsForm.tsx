@@ -1,19 +1,20 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import { Trait } from "../Home";
 import TraitItem from "./TraitItem";
+import CardContext from "../hooks/CardContext";
 
 interface TraitsFormProps {
-    traits: Trait[];
     // eslint-disable-next-line no-unused-vars
     handleNewTrait: (newTrait: Trait) => void;
     // eslint-disable-next-line no-unused-vars
     handleRemoveTrait: (index: number) => void;
 }
 
-const TraitsForm: React.FC<TraitsFormProps> = ({ traits, handleNewTrait, handleRemoveTrait }) => {
+const TraitsForm: React.FC<TraitsFormProps> = ({ handleNewTrait, handleRemoveTrait }) => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
+    const cardProps = useContext(CardContext);
 
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
@@ -57,7 +58,7 @@ const TraitsForm: React.FC<TraitsFormProps> = ({ traits, handleNewTrait, handleR
                 <TraitListTitle>Traits</TraitListTitle>
                 <TraitList>
                     {
-                        traits.map((trait, index) => (
+                        cardProps.traits.map((trait, index) => (
                             <TraitItem key={index} index={index} name={trait.name} handleRemoveTrait={handleRemoveTrait} />
                         ))
                     }

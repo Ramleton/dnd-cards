@@ -1,28 +1,21 @@
-import React, { useRef } from 'react';
+import React, { useContext, useRef } from 'react';
 import Card from './Card';
-import { Trait } from '../Home';
 import { domToPng } from 'modern-screenshot';
 import styled from 'styled-components';
+import CardContext from '../hooks/CardContext';
 
-interface ScreenshotCardProps {
-    title: string,
-    desc: string,
-    icon: string,
-    type: string,
-    traits: Trait[]
-}
-
-const ScreenshotCard: React.FC<ScreenshotCardProps> = ({ title, desc, icon, type, traits }) => {
+const ScreenshotCard: React.FC = () => {
+    const cardProps = useContext(CardContext);
     const cardRef = useRef<HTMLDivElement>(null);
 
     const takeScreenshot = () => {
         const cardElement = cardRef.current;
 
         if (cardElement) {
-            if (title) {
+            if (cardProps.title) {
                 domToPng(cardElement).then(dataUrl => {
                     const link = document.createElement('a');
-                    link.download = `${title.replaceAll(' ', '-')}.png`;
+                    link.download = `${cardProps.title.replaceAll(' ', '-')}.png`;
                     link.href = dataUrl;
                     link.click();
                 });
@@ -32,7 +25,7 @@ const ScreenshotCard: React.FC<ScreenshotCardProps> = ({ title, desc, icon, type
 
     return (
         <ScreenshotContainer>
-            <Card title={title} desc={desc} icon={icon} traits={traits} type={type} forwardedRef={cardRef} />
+            <Card forwardedRef={cardRef} />
             <ScreenshotButton onClick={takeScreenshot}>
                 <ScreenshotButtonText>Screenshot Card</ScreenshotButtonText>
             </ScreenshotButton>
