@@ -32,7 +32,7 @@ const Card: React.FC<CardProps> = ({ forwardedRef }) => {
             case 'Legendary':
                 return '#ec9a0e';
             default:
-                return '#3a3a3a';
+                return '#858585';
         }
     };
 
@@ -164,7 +164,11 @@ const CardContainer = styled.div`
     }
 `;
 
-const CardDiv = styled.div<{ $borderColour: string; }>`
+interface CardDivProps {
+    $borderColour: string;
+}
+
+const CardDiv = styled.div<CardDivProps>`
     display: grid;
     grid-template-rows: repeat(10, 1fr);
     width: 32em;
