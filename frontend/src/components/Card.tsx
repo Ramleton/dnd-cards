@@ -26,7 +26,7 @@ const Card: React.FC<CardProps> = ({ forwardedRef }) => {
             case 'Uncommon':
                 return '#14ea22';
             case 'Rare':
-                return '#238cdb';
+                return '#03ecf8';
             case 'Very Rare':
                 return '#6714ea';
             case 'Legendary':
@@ -40,12 +40,14 @@ const Card: React.FC<CardProps> = ({ forwardedRef }) => {
         <CardContainer ref={forwardedRef} >
             <CardDiv $borderColour={rarityToBackgroundColour(cardProps.rarity)}>
                 <CardIcon src={iconData} />
-                <CardTitleDiv>
+                <CardTitleDiv $isLegendary={cardProps.rarity === 'Legendary'} >
                     <CardTitle>{cardProps.title}</CardTitle>
                     { cardProps.title && <UnderlineDivider /> }
                 </CardTitleDiv>
                 <ItemTypeDiv>
-                    <ItemType>{cardProps.type}</ItemType>
+                    <ItemType>
+                        <span>{cardProps.rarity} {cardProps.type}</span>
+                    </ItemType>
                 </ItemTypeDiv>
                 <CardDescDiv>
                     <CardDesc>{cardProps.desc}</CardDesc>
@@ -108,10 +110,15 @@ const CardIcon = styled.img`
     width: 50%;
 `;
 
-const CardTitleDiv = styled.div`
+interface CardTitleDivProps {
+    $isLegendary: boolean;
+}
+
+const CardTitleDiv = styled.div<CardTitleDivProps>`
     position: relative;
     grid-row: 2 / span 1;
     margin: 0 1em;
+    text-shadow: ${({ $isLegendary }) => $isLegendary && "0em 0.2em 0.1em rgba(255, 123, 0, 0.6);"} 
 `;
 
 const CardTitle = styled.p`
