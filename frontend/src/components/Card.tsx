@@ -118,7 +118,7 @@ const CardTitleDiv = styled.div<CardTitleDivProps>`
     position: relative;
     grid-row: 2 / span 1;
     margin: 0 1em;
-    text-shadow: ${({ $isLegendary }) => $isLegendary && "0em 0.2em 0.1em rgba(255, 123, 0, 0.6);"} 
+    ${({ $isLegendary }) => $isLegendary && "text-shadow: 0em 0.2em 0.1em rgba(255, 123, 0, 0.6);"} 
 `;
 
 const CardTitle = styled.p`
