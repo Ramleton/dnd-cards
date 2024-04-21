@@ -23,8 +23,13 @@ export interface Trait {
     desc: string;
 }
 
+export type Value = `${number}g`;
+
 export interface CardContextState {
     title: string,
+    weight: number,
+    attunement: boolean,
+    value: Value,
     desc: string,
     icon: string,
     type: Item,
@@ -34,6 +39,9 @@ export interface CardContextState {
 
 export type CardContextAction =
     | { type: 'SET_TITLE'; payload: string }
+    | { type: 'SET_WEIGHT'; payload: number }
+    | { type: 'SET_ATTUNEMENT'; payload: boolean }
+    | { type: 'SET_VALUE'; payload: Value }
     | { type: 'SET_DESC'; payload: string }
     | { type: 'SET_ICON'; payload: string }
     | { type: 'SET_TYPE'; payload: Item }
@@ -43,6 +51,9 @@ export type CardContextAction =
 
 const initialState: CardContextState = {
     title: '',
+    weight: 0,
+    attunement: false,
+    value: '0g',
     desc: '',
     icon: '',
     type: null,
@@ -54,6 +65,12 @@ const reducer = (state: CardContextState, action: CardContextAction): CardContex
     switch (action.type) {
         case 'SET_TITLE':
             return { ...state, title: action.payload };
+        case 'SET_WEIGHT':
+            return { ...state, weight: action.payload };
+        case 'SET_ATTUNEMENT':
+            return { ...state, attunement: action.payload };
+        case 'SET_VALUE':
+            return { ...state, value: action.payload };
         case 'SET_DESC':
             return { ...state, desc: action.payload };
         case 'SET_ICON':
