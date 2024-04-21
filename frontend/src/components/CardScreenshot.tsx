@@ -5,17 +5,17 @@ import styled from 'styled-components';
 import CardContext from '../hooks/CardContext';
 
 const ScreenshotCard: React.FC = () => {
-    const cardProps = useContext(CardContext);
+    const { state } = useContext(CardContext);
     const cardRef = useRef<HTMLDivElement>(null);
 
     const takeScreenshot = () => {
         const cardElement = cardRef.current;
 
         if (cardElement) {
-            if (cardProps.title) {
+            if (state.title) {
                 domToPng(cardElement).then(dataUrl => {
                     const link = document.createElement('a');
-                    link.download = `${cardProps.title.replaceAll(' ', '-')}.png`;
+                    link.download = `${state.title.replaceAll(' ', '-')}.png`;
                     link.href = dataUrl;
                     link.click();
                 });

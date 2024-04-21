@@ -1,32 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from 'styled-components';
 import Select, { ActionMeta } from 'react-select';
 import { StylesConfig } from 'react-select';
 import TraitsForm from "./TraitsForm";
 import { fetchAllSvgIcons } from "../api/api";
-import { Item, Rarity, Trait } from "../hooks/CardContext";
+import CardContext, { Item, Rarity } from "../hooks/CardContext";
 
 interface SvgData {
     fileName: string;
     content: string;
     path: string;
-}
-
-interface CardFormProps {
-    // eslint-disable-next-line no-unused-vars
-    handleTitleChange: (newTitle: string) => void;
-    // eslint-disable-next-line no-unused-vars
-    handleDescChange: (newDesc: string) => void;
-    // eslint-disable-next-line no-unused-vars
-    handleIconChange: (newIcon: string) => void;
-    // eslint-disable-next-line no-unused-vars
-    handleTypeChange: (newType: Item) => void;
-    // eslint-disable-next-line no-unused-vars
-    handleNewTrait: (newCardTrait: Trait) => void;
-    // eslint-disable-next-line no-unused-vars
-    handleRemoveTrait: (index: number) => void;
-    // eslint-disable-next-line no-unused-vars
-    handleRarityChange: (newRarity: Rarity) => void;
 }
 
 interface Option {
@@ -44,13 +27,10 @@ const itemTypes: string[] = [
     'Accessory'
 ];
 
-console.log(itemTypes);
-
 const itemRarities = ['Common', 'Uncommon', 'Rare', 'Very Rare', 'Legendary'];
 
-const CardForm: React.FC<CardFormProps> = (
-    { handleTitleChange, handleDescChange, handleIconChange, handleTypeChange, handleNewTrait, handleRemoveTrait, handleRarityChange }
-) => {
+const CardForm: React.FC = () => {
+    const { dispatch } = useContext(CardContext);
     const [svgs, setSvgs] = useState<SvgData[]>([]);
 
     useEffect(() => {
@@ -73,6 +53,26 @@ const CardForm: React.FC<CardFormProps> = (
             ...provided,
             width: 165
         })
+    };
+
+    const handleTitleChange = (newTitle: string) => {
+        dispatch({ type: 'SET_TITLE', payload: newTitle });
+    };
+
+    const handleIconChange = (newIcon: string) => {
+        dispatch({ type: 'SET_ICON', payload: newIcon });
+    };
+
+    const handleTypeChange = (newItemType: Item) => {
+        dispatch({ type: 'SET_TYPE', payload: newItemType });
+    };
+
+    const handleRarityChange = (newRarity: Rarity) => {
+        dispatch({ type: 'SET_RARITY', payload: newRarity });
+    };
+
+    const handleDescChange = (newDesc: string) => {
+        dispatch({ type: 'SET_DESC', payload: newDesc });
     };
 
     return (
@@ -118,7 +118,7 @@ const CardForm: React.FC<CardFormProps> = (
                     </ItemTypeSelect>
                 </FormItem>
             </FormContainer>
-            <TraitsForm handleNewTrait={handleNewTrait} handleRemoveTrait={handleRemoveTrait} />
+            <TraitsForm />
             <FormContainer>
                 <Label>Description</Label>
                 <DescInput onChange={(event) => handleDescChange(event.target.value)} />
