@@ -20,7 +20,7 @@ const FormTop: React.FC = () => {
             fetchAllSvgIcons().then((data: SvgData[]) => {
                 const svgMap: { [editedFileName: string]: SvgData } = {};
                 data.forEach(svg => {
-                    const editedFileName = svg.fileName.slice(0, -4).split('-').map(name => name.charAt(0).toUpperCase() + name.slice(1)).join('');
+                    const editedFileName = svg.fileName.slice(0, -4).split('-').map(name => capitalizeFirstLetter(name)).join('');
                     svgMap[editedFileName] = svg
                 });
                 setSvgs(prevState => ({...prevState, ...svgMap}));
@@ -38,6 +38,8 @@ const FormTop: React.FC = () => {
             });
         }
     }, [selectedSvg]);
+
+    const capitalizeFirstLetter = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
     
     const itemTypes: string[] = [
         'Select an Option',
@@ -108,6 +110,18 @@ const FormTop: React.FC = () => {
         (rarity, index) => <option key={index}>{rarity}</option>
     );
 
+    const getIconAuthor = (): string | undefined => {
+        if (selectedSvg.length) {
+            const author = selectedSvg
+                .split('\\')
+                .slice(-2, -1)[0]
+                .split('-')
+                .map(part => capitalizeFirstLetter(part))
+                .join(' ');
+            return `Icon by: ${author}`;
+        }
+    }
+
     return (
         <FormContainer>
             <FormInputContainer>
@@ -160,6 +174,7 @@ const FormTop: React.FC = () => {
                 <datalist id="icons">
                     { Object.keys(svgs).map((svg, index) => <option key={index}>{svg}</option>) }
                 </datalist>
+                <FormSelectAuthor>{getIconAuthor()}</FormSelectAuthor>
             </FormIconContainer>
             <FormDescContainer>
                 <FormDescLabel>Description</FormDescLabel>
@@ -218,6 +233,11 @@ const FormIconContainer = styled(FormInputContainer)`
 
 const FormSelectIcon = styled(FormTextInput)`
     font-size: 1em;
+`;
+
+const FormSelectAuthor = styled.p`
+    font-size: 1.5em;
+    color: white;
 `;
 
 const FormDescContainer = styled(FormInputContainer)`
