@@ -1,11 +1,40 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import CardContext from "../hooks/CardContext";
 import { Item, Rarity } from "../types/CardTypes";
+import { fetchAllSvgIcons, fetchSvgIcon } from "../api/api";
+
+interface SvgData {
+    fileName: string;
+    path: string;
+}
 
 const FormTop: React.FC = () => {
     const [isChecked, setIsChecked] = useState(false);
+    const [svgs, setSvgs] = useState<{ [editedFileName: string]: SvgData }>({});
+    const [selectedSvg, setSelectedSvg] = useState<string>('');
     const { dispatch } = useContext(CardContext);
+
+    useEffect(() => {
+        if (Object.keys(svgs).length === 0) {
+            fetchAllSvgIcons().then((data: SvgData[]) => {
+                const svgMap: { [editedFileName: string]: SvgData } = {};
+                data.forEach(svg => {
+                    const editedFileName = svg.fileName.slice(0, -4).split('-').map(name => name.charAt(0).toUpperCase() + name.slice(1)).join('');
+                    svgMap[editedFileName] = svg
+                });
+                setSvgs(prevState => ({...prevState, ...svgMap}));
+            });
+        }
+    }, []);
+
+    useEffect(() => {
+        if (selectedSvg) {
+            fetchSvgIcon(selectedSvg).then(data => {
+                if (data instanceof Blob) dispatch({ type: 'SET_ICON', payload: URL.createObjectURL(data)});
+            });
+        }
+    }, [selectedSvg]);
     
     const itemTypes: string[] = [
         'Select an Option',
@@ -45,20 +74,28 @@ const FormTop: React.FC = () => {
 
     const handleWeightChange = (newWeight: string) => {
         const parsedWeight = parseFloat(newWeight);
-        if (parsedWeight) {
+        if (parsedWeight || parsedWeight === 0) {
             dispatch({ type: 'SET_WEIGHT', payload: parsedWeight });
         }
     };
 
     const handleAttunementChange = () => {
-        dispatch({ type: 'SET_ATTUNEMENT', payload: isChecked });
+        dispatch({ type: 'SET_ATTUNEMENT', payload: !isChecked });
         setIsChecked(!isChecked);
     };
 
     const handleValueChange = (newValue: string) => {
         const parsedValue = parseInt(newValue);
-        if (parsedValue) dispatch({ type: 'SET_VALUE', payload: `${parsedValue}g` })
+        if (parsedValue || parsedValue === 0) dispatch({ type: 'SET_VALUE', payload: `${parsedValue}g` })
     };
+
+    const handleIconChange = (newIcon: string) => {
+        if (Object.keys(svgs).includes(newIcon)) setSelectedSvg(svgs[newIcon].path);
+    };
+
+    const handleDescChange = (newDesc: string) => {
+        dispatch({ type: 'SET_DESC', payload: newDesc });
+    }
 
     const itemTypeOptions = itemTypes.map(
         (itemType, index) => <option key={index}>{itemType}</option>
@@ -114,12 +151,39 @@ const FormTop: React.FC = () => {
                     onChange={event => handleValueChange(event.target.value)}
                 />
             </FormInputContainer>
+            <FormIconContainer>
+                <FormSelectLabel>Icon</FormSelectLabel>
+                <FormSelectIcon type="text" list="icons" onChange={event => handleIconChange(event.target.value)} />
+                <datalist id="icons">
+                    { Object.keys(svgs).map((svg, index) => <option key={index}>{svg}</option>) }
+                </datalist>
+            </FormIconContainer>
+            <FormDescContainer>
+                <FormDescLabel>Description</FormDescLabel>
+                <FormDescInput onChange={event => handleDescChange(event.target.value)} />
+            </FormDescContainer>
         </FormContainer>
     )
 };
 
+const FormInputContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 0em 0.2em;
+`;
+
+const FormContainer = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+    width: 100%;
+    height: 100%;
+`;
+
 const FormLabel = styled.label`
-    font-size: 1.2em;
+    font-size: 2em;
     color: white;
 `;
 
@@ -137,20 +201,41 @@ const FormCheckbox = styled.input`
     height: 1.5em;
 `;
 
-const FormInputContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 0em 0.2em;
+const FormSelectLabel = styled(FormLabel)`
+    font-size: 2em;
+    text-decoration: underline;
 `;
 
-const FormContainer = styled.div`
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
-    width: 100%;
-    height: 100%;
+const FormIconContainer = styled(FormInputContainer)`
+    flex-direction: column;
+    grid-row: 3 / span 2;
+    justify-content: space-evenly;
+    grid-column: 2;
+`;
+
+const FormSelectIcon = styled(FormTextInput)`
+    font-size: 1em;
+`;
+
+const FormDescContainer = styled(FormInputContainer)`
+    display: flex;
+    flex-direction: column;
+    grid-row: 5 / span 2;
+    grid-column: 1 / span 2;
+    justify-content: center;
+    align-items: center;
+`;
+
+const FormDescLabel = styled(FormLabel)`
+    font-size: 2em;
+    text-decoration: underline;
+`;
+
+const FormDescInput = styled.textarea`
+    flex-grow: 2;
+    resize: none;
+    width: 60%;
+    margin: 1em 0 0 0;
 `;
 
 export default FormTop;

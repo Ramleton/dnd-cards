@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 
 import fs from 'fs';
 import path from 'path';
-import { findSvgFile, getSvgFilesWithContents, iconsDirectory } from './util';
+import { findSvgFile, getSvgFilesInfo, iconsDirectory } from './util';
 const cors = require('cors');
 
 const app = express();
@@ -25,9 +25,9 @@ app.listen(PORT, () => {
 
 app.get('/api/icons/retrieve/all/', (req: Request, res: Response) => {
     try {
-        const allSvgFiles = getSvgFilesWithContents(iconsDirectory);
-        res.status(200);
-        res.json(allSvgFiles);
+        const allSvgFilesInfo = getSvgFilesInfo(iconsDirectory);
+        res.status(200)
+        res.json(allSvgFilesInfo);
     } catch (error) {
         console.error('Error retrieving SVG files:', error);
         res.status(500).send('Internal Server Error');

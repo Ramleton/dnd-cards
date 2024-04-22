@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { Readable } from 'stream';
 
 export const iconsDirectory = path.join(__dirname, '../public', 'icons');
 
@@ -13,14 +14,13 @@ const readSvgFile = (filePath: string): string | null => {
     }
 };
 
-interface SvgData {
+interface SvgFileInfo {
     fileName: string;
-    content: string;
     path: string;
 }
 
-export const getSvgFilesWithContents = (directory: string, rootDirectory: string = directory): SvgData[] => {
-    let svgFilesWithContents: { fileName: string, content: string, path: string }[] = [];
+export const getSvgFilesInfo = (directory: string, rootDirectory: string = directory): SvgFileInfo[] => {
+    let svgFilesInfo: SvgFileInfo[] = [];
     const files = fs.readdirSync(directory);
 
     files.forEach(file => {
@@ -28,18 +28,15 @@ export const getSvgFilesWithContents = (directory: string, rootDirectory: string
         const stats = fs.statSync(filePath);
 
         if (stats.isDirectory()) {
-            const subDirectoryFiles = getSvgFilesWithContents(filePath, rootDirectory);
-            svgFilesWithContents = svgFilesWithContents.concat(subDirectoryFiles);
+            const subDirectoryFiles = getSvgFilesInfo(filePath, rootDirectory);
+            svgFilesInfo = svgFilesInfo.concat(subDirectoryFiles);
         } else if (stats.isFile() && file.endsWith('.svg')) {
-            const content = readSvgFile(filePath);
-            if (content !== null) {
-                const relativePath = path.relative(rootDirectory, filePath);
-                svgFilesWithContents.push({ fileName: file, content: content, path: relativePath });
-            }
+            const relativePath = path.relative(rootDirectory, filePath);
+            svgFilesInfo.push({ fileName: file, path: relativePath });
         }
     });
 
-    return svgFilesWithContents;
+    return svgFilesInfo;
 };
 
 export const findSvgFile = (directory: string, svgName: string): string | null => {
