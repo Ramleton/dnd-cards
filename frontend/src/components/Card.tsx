@@ -44,7 +44,7 @@ const Card: React.FC<CardProps> = ({ forwardedRef }) => {
                     <p><BoldText>{state.attunement ? "Requires Attunement" : "Does Not Require Attunement"}</BoldText></p>
                     <p>
                         <BoldText>
-                            { `Weighs ${state.weight} lbs. ` }
+                            { `Weight: ${state.weight} lbs. ` }
                             { `Value: ${state.value}` }
                         </BoldText>
                     </p>
@@ -59,8 +59,7 @@ const Card: React.FC<CardProps> = ({ forwardedRef }) => {
                         {
                             state.traits.map((trait, index) => <CardTraitText key={index}>
                                 <CardTraitBoldText>{trait.name}. </CardTraitBoldText>{trait.desc}</CardTraitText>)
-                        }
-                        
+                        }          
                     </CardTraitsContainer>
                 </CardDescAndTraitContainer>
             </CardDetailDiv>
@@ -170,6 +169,7 @@ const CardDescContainer = styled.div`
 
 const CardDescText = styled.p`
     font-size: 1.25em;
+    margin: 0 0 0.3em 0;
 `;
 
 const CardTraitsContainer = styled.div`

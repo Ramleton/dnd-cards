@@ -31,7 +31,10 @@ const FormTop: React.FC = () => {
     useEffect(() => {
         if (selectedSvg) {
             fetchSvgIcon(selectedSvg).then(data => {
-                if (data instanceof Blob) dispatch({ type: 'SET_ICON', payload: URL.createObjectURL(data)});
+                if (data instanceof Blob) {
+                    const url = URL.createObjectURL(data);
+                    dispatch({ type: 'SET_ICON', payload: url });
+                }
             });
         }
     }, [selectedSvg]);
