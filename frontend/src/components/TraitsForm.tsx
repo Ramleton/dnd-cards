@@ -1,7 +1,8 @@
 import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import TraitItem from "./TraitItem";
-import CardContext, { Trait } from "../hooks/CardContext";
+import CardContext from "../hooks/CardContext";
+import { Trait } from "../types/CardTypes";
 
 const TraitsForm: React.FC = () => {
     const [name, setName] = useState('');
@@ -10,10 +11,6 @@ const TraitsForm: React.FC = () => {
 
     const handleNewTrait = (newTrait: Trait) => {
         dispatch({ type: 'ADD_TRAIT', payload: newTrait });
-    };
-
-    const handleRemoveTrait = (removedTrait: number) => {
-        dispatch({ type: 'REMOVE_TRAIT', payload: removedTrait });
     };
 
     const handleSubmit = (event: React.FormEvent) => {
@@ -59,7 +56,7 @@ const TraitsForm: React.FC = () => {
                 <TraitList>
                     {
                         state.traits.map((trait, index) => (
-                            <TraitItem key={index} index={index} name={trait.name} handleRemoveTrait={handleRemoveTrait} />
+                            <TraitItem key={index} index={index} name={trait.name} />
                         ))
                     }
                 </TraitList>

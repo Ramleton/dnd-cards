@@ -1,12 +1,7 @@
 import React, { useContext, useState } from "react";
 import styled from "styled-components";
-import CardContext, { Item, Rarity } from "../hooks/CardContext";
-
-// interface Option {
-//     value: string;
-//     label: string;
-// }
-
+import CardContext from "../hooks/CardContext";
+import { Item, Rarity } from "../types/CardTypes";
 
 const FormTop: React.FC = () => {
     const [isChecked, setIsChecked] = useState(false);

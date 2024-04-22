@@ -1,15 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from 'styled-components';
 import { MdClose } from "react-icons/md";
+import CardContext from "../hooks/CardContext";
 
 interface TraitItemProps {
     index: number;
     name: string;
-    // eslint-disable-next-line no-unused-vars
-    handleRemoveTrait: (index: number) => void;
 }
 
-const TraitItem: React.FC<TraitItemProps> = ({ index, name, handleRemoveTrait }) => {
+const TraitItem: React.FC<TraitItemProps> = ({ index, name }) => {
+    const { dispatch } = useContext(CardContext);
+
+    const handleRemoveTrait = (removeTraitAtIndex: number) => {
+        dispatch({ type: 'REMOVE_TRAIT', payload: removeTraitAtIndex });
+    };
+
     return (
         <TraitItemContainer>
             <TraitText>{name}</TraitText>

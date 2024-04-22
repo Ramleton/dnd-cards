@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import styled from 'styled-components';
 import { fetchSvgIcon } from "../api/api";
-import CardContext, { Rarity } from "../hooks/CardContext";
+import CardContext from "../hooks/CardContext";
+import { Rarity } from "../types/CardTypes";
 
 interface CardProps {
     forwardedRef: React.Ref<HTMLDivElement>
