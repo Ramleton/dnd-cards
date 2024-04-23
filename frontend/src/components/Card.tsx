@@ -33,7 +33,7 @@ const Card: React.FC<CardProps> = ({ forwardedRef }) => {
             <CardDetailDiv>
                 <CardTitleContainer>
                     <CardTitle $isLegendary={state.rarity === 'Legendary'} >{state.title}</CardTitle>
-                    <Divider />
+                    { (state.title && (state.rarity || state.type)) && <Divider /> }
                 </CardTitleContainer>
                 <CardItemTypeContainer>
                     <CardItemTypeText $isLegendary={state.rarity === 'Legendary'}>
@@ -48,12 +48,12 @@ const Card: React.FC<CardProps> = ({ forwardedRef }) => {
                             { `Value: ${state.value}` }
                         </BoldText>
                     </p>
-                    <Divider />
+                    { ((state.weight || state.value) && state.desc) && <Divider /> }
                 </OtherCardDetailsContainer>
                 <CardDescAndTraitContainer>
                     <CardDescContainer>
                         <CardDescText>{state.desc}</CardDescText>
-                        <Divider />
+                        { (state.desc && state.traits.length !== 0) && <Divider /> }
                     </CardDescContainer>
                     <CardTraitsContainer>
                         {
