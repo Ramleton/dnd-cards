@@ -37,7 +37,7 @@ const FormTop: React.FC = () => {
                 }
             });
         }
-    }, [selectedSvg]);
+    }, [dispatch, selectedSvg]);
 
     const capitalizeFirstLetter = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
     
