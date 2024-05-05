@@ -7,6 +7,7 @@ export type Item =
     | 'Jewellery'
     | 'Accessory'
     | 'Potion'
+    | 'Item'
     | null;
 
 export type Rarity =

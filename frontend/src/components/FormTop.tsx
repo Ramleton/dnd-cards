@@ -50,7 +50,8 @@ const FormTop: React.FC = () => {
         'Ranged Weapon',
         'Jewellery',
         'Accessory',
-        'Potion'
+        'Potion',
+        'Item'
     ];
     
     const itemRarities = [
